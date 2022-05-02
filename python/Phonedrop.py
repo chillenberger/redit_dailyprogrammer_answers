@@ -1,6 +1,6 @@
 # [2021-06-28] Challenge #395 [Intermediate] Phone drop
 # https://www.reddit.com/r/dailyprogrammer/comments/o9k0p0/20210628_challenge_395_intermediate_phone_drop/
-
+# Internet egg drop example, this must be recoded in my own understanding.
 
 
 # A Dynamic Programming based Python
