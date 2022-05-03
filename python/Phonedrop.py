@@ -6,17 +6,14 @@ MAX_RECURSION = 3000
 def phonedrop(n, h, memo={}):
 	if n == 1 or h == 1:
 		return h
-	if memo.get(h): # could use functools functools.lru_cache like in redit post
-		if memo[h].get(n):
-			return memo[h][n]
-	else:
-		memo[h] = {}
-	memo[h][n] = 0
+	if memo.get((h, n)): # could use functools functools.lru_cache like in redit post
+		return memo[(h, n)]
+	memo[(h, n)] = 0
 	for i in range(1,h):
 		x = phonedrop(n-1, i)
 		y = phonedrop(n, h-i)
-		memo[h][n] = max(memo[h][n], min(x,y)+1)
-	return memo[h][n]
+		memo[(h, n)] = max(memo[(h, n)], min(x,y)+1)
+	return memo[(h, n)]
 
 
 if __name__ == '__main__':
