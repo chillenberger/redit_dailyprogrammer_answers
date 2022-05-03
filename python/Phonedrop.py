@@ -1,47 +1,28 @@
 # [2021-06-28] Challenge #395 [Intermediate] Phone drop
 # https://www.reddit.com/r/dailyprogrammer/comments/o9k0p0/20210628_challenge_395_intermediate_phone_drop/
-# Internet egg drop example, this must be recoded in my own understanding.
-
-
+import sys
+MAX_RECURSION = 3000
 # A Dynamic Programming based Python
-# Program for the Egg Dropping Puzzle
-INT_MAX = 32767
-
-# Function to get minimum number of trials needed in worst
-# case with n eggs and k floors
-def eggDrop(n, k):
-	# A 2D table where entry eggFloor[i][j] will represent minimum
-	# number of trials needed for i eggs and j floors.
-	eggFloor = [[0 for x in range(k + 1)] for x in range(n + 1)]
-
-	# We need one trial for one floor and0 trials for 0 floors
-	for i in range(1, n + 1):
-		eggFloor[i][1] = 1
-		eggFloor[i][0] = 0
-
-	# We always need j trials for one egg and j floors.
-	for j in range(1, k + 1):
-		eggFloor[1][j] = j
-
-	# Fill rest of the entries in table using optimal substructure
-	# property
-	for i in range(2, n + 1):
-		for j in range(2, k + 1):
-			eggFloor[i][j] = INT_MAX
-			for x in range(1, j + 1):
-				res = 1 + max(eggFloor[i-1][x-1], eggFloor[i][j-x])
-				if res < eggFloor[i][j]:
-					eggFloor[i][j] = res
-
-	# eggFloor[n][k] holds the result
-	return eggFloor[n][k]
-
+def phonedrop(n, h, memo={}):
+	if n == 1 or h == 1:
+		return h
+	if memo.get(h): # could use functools functools.lru_cache like in redit post
+		if memo[h].get(n):
+			return memo[h][n]
+	else:
+		memo[h] = {}
+	memo[h][n] = 0
+	for i in range(1,h):
+		x = phonedrop(n-1, i)
+		y = phonedrop(n, h-i)
+		memo[h][n] = max(memo[h][n], min(x,y)+1)
+	return memo[h][n]
 
 
 if __name__ == '__main__':
 
     # Driver program to test to printDups
-    n = 2
-    k = 1000
-    print("Minimum number of trials in worst case with" + str(n) + "eggs and "
-    	+ str(k) + " floors is " + str(eggDrop(n, k)))
+	n = 4
+	k = 2000
+	sys.setrecursionlimit(MAX_RECURSION)
+	print(phonedrop(n, k))
